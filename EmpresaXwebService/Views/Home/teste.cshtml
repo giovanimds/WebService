@@ -1,0 +1,43 @@
+﻿@model EmpresaXwebService.Views.Home.WebService
+
+@{
+    ViewBag.Title = "teste";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<script type="text/javascript" language="javascript">
+    //$.post("https://localhost:57938/Controllers/WebService.asmx/getPecaById", { id: 1 })
+        //.done(function (data) {
+        //    alert(data);
+       // });
+    //$.post("https://localhost:57938/Views/Home/WebService.asmx/getPecaById", { id: 1 })
+     //   .done(function (data) {
+   //         alert(data);
+    //    });
+    //var client = new HttpClient();
+    
+    //client.get('https://localhost:57938/Views/Home/WebService.asmx/getPecaById?id=1', function (response) {
+   //     alert(response);
+   // });
+</script>
+
+<h2>teste</h2>
+
+<div>
+    <h4>WebService</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.DesignMode)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.DesignMode)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { /* id = Model.PrimaryKey */ }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

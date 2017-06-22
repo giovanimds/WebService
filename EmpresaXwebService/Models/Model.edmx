@@ -1,0 +1,524 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="EmpresaXdatabaseModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012.Azure" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Cliente">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="nome" Type="char" MaxLength="30" Nullable="false" />
+          <Property Name="cnpj" Type="char" MaxLength="11" />
+          <Property Name="rua" Type="char" MaxLength="50" Nullable="false" />
+          <Property Name="numero" Type="int" Nullable="false" />
+          <Property Name="cep" Type="char" MaxLength="8" />
+          <Property Name="telefone" Type="char" MaxLength="15" />
+        </EntityType>
+        <EntityType Name="Material">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="cod" Type="char" MaxLength="25" Nullable="false" />
+          <Property Name="nome" Type="char" MaxLength="25" Nullable="false" />
+          <Property Name="valor" Type="money" Nullable="false" />
+          <Property Name="consumo" Type="float" Nullable="false" />
+        </EntityType>
+        <EntityType Name="OrdemDeServico">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="pecaId" Type="int" />
+          <Property Name="usuarioId" Type="int" />
+          <Property Name="clienteId" Type="int" />
+          <Property Name="usinagemId" Type="int" />
+          <Property Name="valorTotal" Type="money" />
+        </EntityType>
+        <EntityType Name="Peca">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="cod" Type="char" MaxLength="25" Nullable="false" />
+          <Property Name="desenho" Type="varbinary" MaxLength="1" />
+          <Property Name="largura" Type="float" />
+          <Property Name="comprimento" Type="float" />
+          <Property Name="diametro" Type="float" />
+          <Property Name="materialId" Type="int" />
+        </EntityType>
+        <EntityType Name="Realizado">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="OrdemDeServicoId" Type="int" />
+          <Property Name="usinagemId" Type="int" />
+          <Property Name="valorTotal" Type="money" />
+        </EntityType>
+        <EntityType Name="Usinagem">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="pequeno" Type="float" />
+          <Property Name="medio" Type="float" />
+          <Property Name="grande" Type="float" />
+        </EntityType>
+        <EntityType Name="Usuario">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="nome" Type="char" MaxLength="25" Nullable="false" />
+          <Property Name="funcao" Type="char" MaxLength="10" Nullable="false" />
+          <Property Name="login" Type="char" MaxLength="25" Nullable="false" />
+          <Property Name="senha" Type="char" MaxLength="25" Nullable="false" />
+        </EntityType>
+        <Association Name="FK__OrdemDeSe__clien__440B1D61">
+          <End Role="Cliente" Type="Self.Cliente" Multiplicity="0..1" />
+          <End Role="OrdemDeServico" Type="Self.OrdemDeServico" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Cliente">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="OrdemDeServico">
+              <PropertyRef Name="clienteId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__OrdemDeSe__pecaI__4222D4EF">
+          <End Role="Peca" Type="Self.Peca" Multiplicity="0..1" />
+          <End Role="OrdemDeServico" Type="Self.OrdemDeServico" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Peca">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="OrdemDeServico">
+              <PropertyRef Name="pecaId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__OrdemDeSe__usina__44FF419A">
+          <End Role="Usinagem" Type="Self.Usinagem" Multiplicity="0..1" />
+          <End Role="OrdemDeServico" Type="Self.OrdemDeServico" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Usinagem">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="OrdemDeServico">
+              <PropertyRef Name="usinagemId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__OrdemDeSe__usuar__4316F928">
+          <End Role="Usuario" Type="Self.Usuario" Multiplicity="0..1" />
+          <End Role="OrdemDeServico" Type="Self.OrdemDeServico" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Usuario">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="OrdemDeServico">
+              <PropertyRef Name="usuarioId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Peca__materialId__3F466844">
+          <End Role="Material" Type="Self.Material" Multiplicity="0..1" />
+          <End Role="Peca" Type="Self.Peca" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Material">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="Peca">
+              <PropertyRef Name="materialId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Realizado__Ordem__47DBAE45">
+          <End Role="OrdemDeServico" Type="Self.OrdemDeServico" Multiplicity="0..1" />
+          <End Role="Realizado" Type="Self.Realizado" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="OrdemDeServico">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="Realizado">
+              <PropertyRef Name="OrdemDeServicoId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Realizado__usina__48CFD27E">
+          <End Role="Usinagem" Type="Self.Usinagem" Multiplicity="0..1" />
+          <End Role="Realizado" Type="Self.Realizado" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Usinagem">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="Realizado">
+              <PropertyRef Name="usinagemId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="EmpresaXdatabaseModelStoreContainer">
+          <EntitySet Name="Cliente" EntityType="Self.Cliente" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Material" EntityType="Self.Material" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="OrdemDeServico" EntityType="Self.OrdemDeServico" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Peca" EntityType="Self.Peca" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Realizado" EntityType="Self.Realizado" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Usinagem" EntityType="Self.Usinagem" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Usuario" EntityType="Self.Usuario" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK__OrdemDeSe__clien__440B1D61" Association="Self.FK__OrdemDeSe__clien__440B1D61">
+            <End Role="Cliente" EntitySet="Cliente" />
+            <End Role="OrdemDeServico" EntitySet="OrdemDeServico" />
+          </AssociationSet>
+          <AssociationSet Name="FK__OrdemDeSe__pecaI__4222D4EF" Association="Self.FK__OrdemDeSe__pecaI__4222D4EF">
+            <End Role="Peca" EntitySet="Peca" />
+            <End Role="OrdemDeServico" EntitySet="OrdemDeServico" />
+          </AssociationSet>
+          <AssociationSet Name="FK__OrdemDeSe__usina__44FF419A" Association="Self.FK__OrdemDeSe__usina__44FF419A">
+            <End Role="Usinagem" EntitySet="Usinagem" />
+            <End Role="OrdemDeServico" EntitySet="OrdemDeServico" />
+          </AssociationSet>
+          <AssociationSet Name="FK__OrdemDeSe__usuar__4316F928" Association="Self.FK__OrdemDeSe__usuar__4316F928">
+            <End Role="Usuario" EntitySet="Usuario" />
+            <End Role="OrdemDeServico" EntitySet="OrdemDeServico" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Peca__materialId__3F466844" Association="Self.FK__Peca__materialId__3F466844">
+            <End Role="Material" EntitySet="Material" />
+            <End Role="Peca" EntitySet="Peca" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Realizado__Ordem__47DBAE45" Association="Self.FK__Realizado__Ordem__47DBAE45">
+            <End Role="OrdemDeServico" EntitySet="OrdemDeServico" />
+            <End Role="Realizado" EntitySet="Realizado" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Realizado__usina__48CFD27E" Association="Self.FK__Realizado__usina__48CFD27E">
+            <End Role="Usinagem" EntitySet="Usinagem" />
+            <End Role="Realizado" EntitySet="Realizado" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="EmpresaXdatabaseModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Cliente">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="nome" Type="String" MaxLength="30" FixedLength="true" Unicode="false" Nullable="false" />
+          <Property Name="cnpj" Type="String" MaxLength="11" FixedLength="true" Unicode="false" />
+          <Property Name="rua" Type="String" MaxLength="50" FixedLength="true" Unicode="false" Nullable="false" />
+          <Property Name="numero" Type="Int32" Nullable="false" />
+          <Property Name="cep" Type="String" MaxLength="8" FixedLength="true" Unicode="false" />
+          <Property Name="telefone" Type="String" MaxLength="15" FixedLength="true" Unicode="false" />
+          <NavigationProperty Name="OrdemDeServico" Relationship="Self.FK__OrdemDeSe__clien__440B1D61" FromRole="Cliente" ToRole="OrdemDeServico" />
+        </EntityType>
+        <EntityType Name="Material">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="cod" Type="String" MaxLength="25" FixedLength="true" Unicode="false" Nullable="false" />
+          <Property Name="nome" Type="String" MaxLength="25" FixedLength="true" Unicode="false" Nullable="false" />
+          <Property Name="valor" Type="Decimal" Precision="19" Scale="4" Nullable="false" />
+          <Property Name="consumo" Type="Double" Nullable="false" />
+          <NavigationProperty Name="Peca" Relationship="Self.FK__Peca__materialId__3F466844" FromRole="Material" ToRole="Peca" />
+        </EntityType>
+        <EntityType Name="OrdemDeServico">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="pecaId" Type="Int32" />
+          <Property Name="usuarioId" Type="Int32" />
+          <Property Name="clienteId" Type="Int32" />
+          <Property Name="usinagemId" Type="Int32" />
+          <Property Name="valorTotal" Type="Decimal" Precision="19" Scale="4" />
+          <NavigationProperty Name="Cliente" Relationship="Self.FK__OrdemDeSe__clien__440B1D61" FromRole="OrdemDeServico" ToRole="Cliente" />
+          <NavigationProperty Name="Peca" Relationship="Self.FK__OrdemDeSe__pecaI__4222D4EF" FromRole="OrdemDeServico" ToRole="Peca" />
+          <NavigationProperty Name="Usinagem" Relationship="Self.FK__OrdemDeSe__usina__44FF419A" FromRole="OrdemDeServico" ToRole="Usinagem" />
+          <NavigationProperty Name="Usuario" Relationship="Self.FK__OrdemDeSe__usuar__4316F928" FromRole="OrdemDeServico" ToRole="Usuario" />
+          <NavigationProperty Name="Realizado" Relationship="Self.FK__Realizado__Ordem__47DBAE45" FromRole="OrdemDeServico" ToRole="Realizado" />
+        </EntityType>
+        <EntityType Name="Peca">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="cod" Type="String" MaxLength="25" FixedLength="true" Unicode="false" Nullable="false" />
+          <Property Name="desenho" Type="Binary" MaxLength="1" FixedLength="false" />
+          <Property Name="largura" Type="Double" />
+          <Property Name="comprimento" Type="Double" />
+          <Property Name="diametro" Type="Double" />
+          <Property Name="materialId" Type="Int32" />
+          <NavigationProperty Name="Material" Relationship="Self.FK__Peca__materialId__3F466844" FromRole="Peca" ToRole="Material" />
+          <NavigationProperty Name="OrdemDeServico" Relationship="Self.FK__OrdemDeSe__pecaI__4222D4EF" FromRole="Peca" ToRole="OrdemDeServico" />
+        </EntityType>
+        <EntityType Name="Realizado">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="OrdemDeServicoId" Type="Int32" />
+          <Property Name="usinagemId" Type="Int32" />
+          <Property Name="valorTotal" Type="Decimal" Precision="19" Scale="4" />
+          <NavigationProperty Name="OrdemDeServico" Relationship="Self.FK__Realizado__Ordem__47DBAE45" FromRole="Realizado" ToRole="OrdemDeServico" />
+          <NavigationProperty Name="Usinagem" Relationship="Self.FK__Realizado__usina__48CFD27E" FromRole="Realizado" ToRole="Usinagem" />
+        </EntityType>
+        <EntityType Name="Usinagem">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="pequeno" Type="Double" />
+          <Property Name="medio" Type="Double" />
+          <Property Name="grande" Type="Double" />
+          <NavigationProperty Name="OrdemDeServico" Relationship="Self.FK__OrdemDeSe__usina__44FF419A" FromRole="Usinagem" ToRole="OrdemDeServico" />
+          <NavigationProperty Name="Realizado" Relationship="Self.FK__Realizado__usina__48CFD27E" FromRole="Usinagem" ToRole="Realizado" />
+        </EntityType>
+        <EntityType Name="Usuario">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="nome" Type="String" MaxLength="25" FixedLength="true" Unicode="false" Nullable="false" />
+          <Property Name="funcao" Type="String" MaxLength="10" FixedLength="true" Unicode="false" Nullable="false" />
+          <Property Name="login" Type="String" MaxLength="25" FixedLength="true" Unicode="false" Nullable="false" />
+          <Property Name="senha" Type="String" MaxLength="25" FixedLength="true" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="OrdemDeServico" Relationship="Self.FK__OrdemDeSe__usuar__4316F928" FromRole="Usuario" ToRole="OrdemDeServico" />
+        </EntityType>
+        <Association Name="FK__OrdemDeSe__clien__440B1D61">
+          <End Role="Cliente" Type="Self.Cliente" Multiplicity="0..1" />
+          <End Role="OrdemDeServico" Type="Self.OrdemDeServico" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Cliente">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="OrdemDeServico">
+              <PropertyRef Name="clienteId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Peca__materialId__3F466844">
+          <End Role="Material" Type="Self.Material" Multiplicity="0..1" />
+          <End Role="Peca" Type="Self.Peca" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Material">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="Peca">
+              <PropertyRef Name="materialId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__OrdemDeSe__pecaI__4222D4EF">
+          <End Role="Peca" Type="Self.Peca" Multiplicity="0..1" />
+          <End Role="OrdemDeServico" Type="Self.OrdemDeServico" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Peca">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="OrdemDeServico">
+              <PropertyRef Name="pecaId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__OrdemDeSe__usina__44FF419A">
+          <End Role="Usinagem" Type="Self.Usinagem" Multiplicity="0..1" />
+          <End Role="OrdemDeServico" Type="Self.OrdemDeServico" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Usinagem">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="OrdemDeServico">
+              <PropertyRef Name="usinagemId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__OrdemDeSe__usuar__4316F928">
+          <End Role="Usuario" Type="Self.Usuario" Multiplicity="0..1" />
+          <End Role="OrdemDeServico" Type="Self.OrdemDeServico" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Usuario">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="OrdemDeServico">
+              <PropertyRef Name="usuarioId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Realizado__Ordem__47DBAE45">
+          <End Role="OrdemDeServico" Type="Self.OrdemDeServico" Multiplicity="0..1" />
+          <End Role="Realizado" Type="Self.Realizado" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="OrdemDeServico">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="Realizado">
+              <PropertyRef Name="OrdemDeServicoId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Realizado__usina__48CFD27E">
+          <End Role="Usinagem" Type="Self.Usinagem" Multiplicity="0..1" />
+          <End Role="Realizado" Type="Self.Realizado" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Usinagem">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="Realizado">
+              <PropertyRef Name="usinagemId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="masterEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Cliente" EntityType="Self.Cliente" />
+          <EntitySet Name="Material" EntityType="Self.Material" />
+          <EntitySet Name="OrdemDeServico" EntityType="Self.OrdemDeServico" />
+          <EntitySet Name="Peca" EntityType="Self.Peca" />
+          <EntitySet Name="Realizado" EntityType="Self.Realizado" />
+          <EntitySet Name="Usinagem" EntityType="Self.Usinagem" />
+          <EntitySet Name="Usuario" EntityType="Self.Usuario" />
+          <AssociationSet Name="FK__OrdemDeSe__clien__440B1D61" Association="Self.FK__OrdemDeSe__clien__440B1D61">
+            <End Role="Cliente" EntitySet="Cliente" />
+            <End Role="OrdemDeServico" EntitySet="OrdemDeServico" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Peca__materialId__3F466844" Association="Self.FK__Peca__materialId__3F466844">
+            <End Role="Material" EntitySet="Material" />
+            <End Role="Peca" EntitySet="Peca" />
+          </AssociationSet>
+          <AssociationSet Name="FK__OrdemDeSe__pecaI__4222D4EF" Association="Self.FK__OrdemDeSe__pecaI__4222D4EF">
+            <End Role="Peca" EntitySet="Peca" />
+            <End Role="OrdemDeServico" EntitySet="OrdemDeServico" />
+          </AssociationSet>
+          <AssociationSet Name="FK__OrdemDeSe__usina__44FF419A" Association="Self.FK__OrdemDeSe__usina__44FF419A">
+            <End Role="Usinagem" EntitySet="Usinagem" />
+            <End Role="OrdemDeServico" EntitySet="OrdemDeServico" />
+          </AssociationSet>
+          <AssociationSet Name="FK__OrdemDeSe__usuar__4316F928" Association="Self.FK__OrdemDeSe__usuar__4316F928">
+            <End Role="Usuario" EntitySet="Usuario" />
+            <End Role="OrdemDeServico" EntitySet="OrdemDeServico" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Realizado__Ordem__47DBAE45" Association="Self.FK__Realizado__Ordem__47DBAE45">
+            <End Role="OrdemDeServico" EntitySet="OrdemDeServico" />
+            <End Role="Realizado" EntitySet="Realizado" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Realizado__usina__48CFD27E" Association="Self.FK__Realizado__usina__48CFD27E">
+            <End Role="Usinagem" EntitySet="Usinagem" />
+            <End Role="Realizado" EntitySet="Realizado" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="EmpresaXdatabaseModelStoreContainer" CdmEntityContainer="masterEntities">
+          <EntitySetMapping Name="Cliente">
+            <EntityTypeMapping TypeName="EmpresaXdatabaseModel.Cliente">
+              <MappingFragment StoreEntitySet="Cliente">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="nome" ColumnName="nome" />
+                <ScalarProperty Name="cnpj" ColumnName="cnpj" />
+                <ScalarProperty Name="rua" ColumnName="rua" />
+                <ScalarProperty Name="numero" ColumnName="numero" />
+                <ScalarProperty Name="cep" ColumnName="cep" />
+                <ScalarProperty Name="telefone" ColumnName="telefone" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Material">
+            <EntityTypeMapping TypeName="EmpresaXdatabaseModel.Material">
+              <MappingFragment StoreEntitySet="Material">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="cod" ColumnName="cod" />
+                <ScalarProperty Name="nome" ColumnName="nome" />
+                <ScalarProperty Name="valor" ColumnName="valor" />
+                <ScalarProperty Name="consumo" ColumnName="consumo" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="OrdemDeServico">
+            <EntityTypeMapping TypeName="EmpresaXdatabaseModel.OrdemDeServico">
+              <MappingFragment StoreEntitySet="OrdemDeServico">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="pecaId" ColumnName="pecaId" />
+                <ScalarProperty Name="usuarioId" ColumnName="usuarioId" />
+                <ScalarProperty Name="clienteId" ColumnName="clienteId" />
+                <ScalarProperty Name="usinagemId" ColumnName="usinagemId" />
+                <ScalarProperty Name="valorTotal" ColumnName="valorTotal" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Peca">
+            <EntityTypeMapping TypeName="EmpresaXdatabaseModel.Peca">
+              <MappingFragment StoreEntitySet="Peca">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="cod" ColumnName="cod" />
+                <ScalarProperty Name="desenho" ColumnName="desenho" />
+                <ScalarProperty Name="largura" ColumnName="largura" />
+                <ScalarProperty Name="comprimento" ColumnName="comprimento" />
+                <ScalarProperty Name="diametro" ColumnName="diametro" />
+                <ScalarProperty Name="materialId" ColumnName="materialId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Realizado">
+            <EntityTypeMapping TypeName="EmpresaXdatabaseModel.Realizado">
+              <MappingFragment StoreEntitySet="Realizado">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="OrdemDeServicoId" ColumnName="OrdemDeServicoId" />
+                <ScalarProperty Name="usinagemId" ColumnName="usinagemId" />
+                <ScalarProperty Name="valorTotal" ColumnName="valorTotal" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Usinagem">
+            <EntityTypeMapping TypeName="EmpresaXdatabaseModel.Usinagem">
+              <MappingFragment StoreEntitySet="Usinagem">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="pequeno" ColumnName="pequeno" />
+                <ScalarProperty Name="medio" ColumnName="medio" />
+                <ScalarProperty Name="grande" ColumnName="grande" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Usuario">
+            <EntityTypeMapping TypeName="EmpresaXdatabaseModel.Usuario">
+              <MappingFragment StoreEntitySet="Usuario">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="nome" ColumnName="nome" />
+                <ScalarProperty Name="funcao" ColumnName="funcao" />
+                <ScalarProperty Name="login" ColumnName="login" />
+                <ScalarProperty Name="senha" ColumnName="senha" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
