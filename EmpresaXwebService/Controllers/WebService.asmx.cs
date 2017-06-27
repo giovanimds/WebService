@@ -34,12 +34,14 @@ namespace EmpresaXwebService.Controllers
 
         [WebMethod]
         [ScriptMethod(ResponseFormat = ResponseFormat.Json)]
-        public string getPecaById(int id)
+        public string getPecaById(string cod)
         {
             JavaScriptSerializer js = new JavaScriptSerializer();
             using (masterEntities db = new masterEntities())
             {
-                return js.Serialize(db.Peca.FirstOrDefault(x => x.id.Equals(id)));
+                db.Configuration.ProxyCreationEnabled = false;
+                Peca p = db.Peca.FirstOrDefault(x => x.cod.Equals(cod));
+                return js.Serialize(p);
             }
         }
 

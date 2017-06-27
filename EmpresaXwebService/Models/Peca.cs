@@ -9,6 +9,7 @@
 
 namespace EmpresaXwebService.Models
 {
+    using Newtonsoft.Json;
     using System;
     using System.Collections.Generic;
     
@@ -27,9 +28,11 @@ namespace EmpresaXwebService.Models
         public Nullable<double> comprimento { get; set; }
         public Nullable<double> diametro { get; set; }
         public Nullable<int> materialId { get; set; }
-    
+
+        [JsonIgnore]
         public virtual Material Material { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        [JsonIgnore]
         public virtual ICollection<OrdemDeServico> OrdemDeServico { get; set; }
     }
 }
