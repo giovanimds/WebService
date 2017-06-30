@@ -14,7 +14,7 @@ namespace EmpresaXwebService.Controllers
     /// Descrição resumida de WebService
     /// </summary>
     [WebService(Namespace = "http://tempuri.org/")]
-    [WebServiceBinding(ConformsTo = WsiProfiles.BasicProfile1_1)]
+    [WebServiceBinding(ConformsTo = WsiProfiles.None)]
     [System.ComponentModel.ToolboxItem(false)]
     // Para permitir que esse serviço da web seja chamado a partir do script, usando ASP.NET AJAX, remova os comentários da linha a seguir. 
     [System.Web.Script.Services.ScriptService]
@@ -37,7 +37,7 @@ namespace EmpresaXwebService.Controllers
         public string getPecaById(string cod)
         {
             JavaScriptSerializer js = new JavaScriptSerializer();
-            using (masterEntities db = new masterEntities())
+            using (masterEntities1 db = new masterEntities1())
             {
                 db.Configuration.ProxyCreationEnabled = false;
                 Peca p = db.Peca.FirstOrDefault(x => x.cod.Equals(cod));
@@ -59,7 +59,7 @@ namespace EmpresaXwebService.Controllers
         )
         {
             JavaScriptSerializer js = new JavaScriptSerializer();
-            using (masterEntities db = new masterEntities())
+            using (masterEntities1 db = new masterEntities1())
             {
                 OrdemDeServico servico = new OrdemDeServico()
                 {
